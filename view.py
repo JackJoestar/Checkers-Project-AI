@@ -11,6 +11,7 @@ height = 500
 offset_x = width / 8
 offset_y = height / 8
 win = graphics.GraphWin("Checkers", width, height)
+ai.DIFFICULTY = 2
 
 
 def drawBoard():
@@ -76,15 +77,16 @@ def runAI(color):
     return ai_move
 
 
-def chooseDif():
-    difwin = graphics.GraphWin("Choose Difficulty")
-    difwin.focus()
-    entry = graphics.Entry(Point(100, 100), 20)
-    entry.setText("2")
-    entry.draw(difwin)
-    difwin.getMouse()
-    ai.DIFFICULTY = int(entry.getText())
-    difwin.close()
+# def chooseDif():
+#     difwin = graphics.GraphWin("Choose Difficulty")
+#     difwin.focus()
+#     entry = graphics.Entry(Point(100, 100), 20)
+#     entry.setText("2")
+#     entry.draw(difwin)
+#     difwin.getMouse()
+#     ai.DIFFICULTY = int(entry.getText())
+#     difwin.close()
+
 
 def playerTurn(color):
     while True:
@@ -108,7 +110,6 @@ def playerTurn(color):
             return
 
 def draw():
-    chooseDif()
     drawBoard()
     drawCheckers()
     while model.hasWon(model.board) == 0:

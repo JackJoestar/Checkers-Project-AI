@@ -209,7 +209,7 @@ def distanceToKing(y, color):
 
 # Weighs a board based different types of available moves
 
-
+#This can be considered as the Utility Function
 def weighBoard(board, depth):
     white_moves = findMoves(board, False) + findJumps(board, False)
     black_moves = findMoves(board, True) + findJumps(board, True)
@@ -334,6 +334,7 @@ def doesMoveEndProtect(board, move, color):
     return False
 
 # Does the work of computing what move to do next
+#This is in alpha beta pruning mode
 def minimax(depth, color, board, a, b):
     if depth == DIFFICULTY:
         moves = weighBoard(board, depth)
