@@ -333,9 +333,62 @@ def doesMoveEndProtect(board, move, color):
 
     return False
 
+
+def minimax(depth, color, board):
+    if depth == DIFFICULTY:
+        moves = weighBoard(board, depth)
+        if color:
+            black_moves = moves[1]
+            # Min
+            # Returns move best for black
+            mini = None
+            for move in black_moves:
+                if mini is None:
+                    mini = move
+                elif mini.weight > move.weight:
+                    mini = move
+            return mini
+        else:
+            white_moves = moves[0]
+            # Max
+            # Returns move best for white
+            maxi = None
+            for move in white_moves:
+                if maxi is None:
+                    maxi = move
+                elif maxi.weight < move.weight:
+                    maxi = move
+            return maxi
+
+    best_move = None
+    if color:
+        # Min
+        # Evaluates future impact of moves and ranks them accordingly
+        black_moves = findMoves(board, True) + findJumps(board, True)
+        if best_move is not None:
+            return best_move
+
+        for move in black_moves:
+            copy = model.copyBoard(board)
+            val = minimax(depth + 1, False, move.apply(copy))
+            if best_move is None or val.weight < best_move.weight or move.type == "Jump":
+                best_move = val
+
+    else:
+        # Evaluates future impact of moves and ranks them accordingly
+        white_moves = findMoves(board, False) + findJumps(board, False)
+        for move in white_moves:
+            val = minimax(depth + 1, True,
+                          move.apply(model.copyBoard(board)))
+            if best_move is None or val.weight > best_move.weight:
+                best_move = val
+
+    return best_move
+
+
 # Does the work of computing what move to do next
 #This is in alpha beta pruning mode
-def minimax(depth, color, board, a, b):
+def minimax_alpha_beta(depth, color, board, a, b):
     if depth == DIFFICULTY:
         moves = weighBoard(board, depth)
         if color:
@@ -377,7 +430,7 @@ def minimax(depth, color, board, a, b):
 
         for move in black_moves:
             copy = model.copyBoard(board)
-            val = minimax(depth + 1, False, move.apply(copy), a, b)
+            val = minimax_alpha_beta(depth + 1, False, move.apply(copy), a, b)
             if best_move is None or val.weight < best_move.weight or move.type == "Jump":
                 best_move = val
             b = min(b, best_move.weight)
@@ -388,7 +441,7 @@ def minimax(depth, color, board, a, b):
         # Evaluates future impact of moves and ranks them accordingly
         white_moves = findMoves(board, False) + findJumps(board, False)
         for move in white_moves:
-            val = minimax(depth + 1, True,
+            val = minimax_alpha_beta(depth + 1, True,
                           move.apply(model.copyBoard(board)), a, b)
             if best_move is None or val.weight > best_move.weight:
                 best_move = val
@@ -396,3 +449,5 @@ def minimax(depth, color, board, a, b):
             if b <= a:
                 break
     return best_move
+
+

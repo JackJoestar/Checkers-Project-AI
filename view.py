@@ -66,12 +66,22 @@ def redraw():
 
 def runAI(color):
     t1 = time.time()
-    ai_move = ai.minimax(0, color, model.board, float("-inf"), float("inf"))
-    print(ai_move.weight)
+    ai_move_alpha_beta = ai.minimax_alpha_beta(0, color, model.board, float("-inf"), float("inf"))
+    print(ai_move_alpha_beta.weight)
     t2 = time.time()
     print(t2-t1)
+
+    t3 = time.time()
+    ai_move_minimax = ai.minimax(0, color, model.board)
+    print(ai_move_minimax.weight)
+    t4 = time.time()
+    print(t3 - t4)
     #model.ttable.save()
     model.ttable.hashtable = {}
+    if t2-t1<=t4-t3:
+        ai_move=ai_move_alpha_beta
+    else:
+        ai_move=ai_move_minimax
     ai_move.apply(model.board)
     redraw()
     return ai_move
