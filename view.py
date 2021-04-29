@@ -5,13 +5,24 @@ import graphics
 from graphics import Point
 import model
 
-
+#Window settings
 width = 500
 height = 500
 offset_x = width / 8
 offset_y = height / 8
 win = graphics.GraphWin("Checkers", width, height)
+
+#Difficulty means how deep do you want the algorithms to go
 ai.DIFFICULTY = 2
+print("Current AI Difficulty/Depth Level: "+ str(ai.DIFFICULTY))
+print()
+print()
+
+
+#Run a tally of which algorithm is chosen.
+chosen_minimax = 0
+chosen_alpha_beta = 0
+move = 1
 
 
 def drawBoard():
@@ -65,25 +76,37 @@ def redraw():
 
 
 def runAI(color):
+    global chosen_minimax
+    global chosen_alpha_beta
+    global move
+    print()
+    print("MOVE "+ str(move))
+    print("----------------------------------------------------")
+    #Alpha-beta pruning
     t1 = time.time()
     ai_move_alpha_beta = ai.minimax_alpha_beta(0, color, model.board, float("-inf"), float("inf"))
-    print(ai_move_alpha_beta.weight)
+    print("Current weight of the board using Alpha-Beta: " + str(ai_move_alpha_beta.weight))
     t2 = time.time()
-    print(t2-t1)
+    print("Time taken to calculate the move using Alpha-Beta:" + str(t2-t1))
 
-    t3 = time.time()
-    ai_move_minimax = ai.minimax(0, color, model.board)
-    print(ai_move_minimax.weight)
-    t4 = time.time()
-    print(t3 - t4)
+    #Regular
+    # t3 = time.time()
+    # ai_move_minimax = ai.minimax(0, color, model.board)
+    # print("Current weight of the board using Regular: " + str(ai_move_minimax.weight))
+    # t4 = time.time()
+    # print("Time taken to calculate the move using Regular:" + str(t4-t3))
+
     #model.ttable.save()
     model.ttable.hashtable = {}
-    if t2-t1<=t4-t3:
-        ai_move=ai_move_alpha_beta
-    else:
-        ai_move=ai_move_minimax
+
+
+
+    #ai_move = ai_move_minimax
+    ai_move = ai_move_alpha_beta
     ai_move.apply(model.board)
     redraw()
+
+    move += 1
     return ai_move
 
 
@@ -125,7 +148,8 @@ def draw():
     while model.hasWon(model.board) == 0:
         sleep(0.01)
         model.King(model.board)
-        playerTurn(False)
+        #playerTurn(False)
+        runAI(False)
         model.King(model.board)
         win.update()
         runAI(True)
