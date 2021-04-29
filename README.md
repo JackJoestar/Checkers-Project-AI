@@ -1,6 +1,6 @@
-# Checkers AI
+# Checkers AI Project for CIIC5015
 
-A checkers ai that plays against a human. Includes GUI for the game.
+A checkers AI that plays against another AI. Includes GUI for the game.
 
 # Installation
 
@@ -10,8 +10,13 @@ A checkers ai that plays against a human. Includes GUI for the game.
 
 3. Run `python script.py`
 
-4. Play
+(MODIFIED USING PYCHARM IDE)
 
 # Algorithm
 
-The AI uses minimax and alpha beta pruning
+The AI uses Regular Minimax and Alpha Beta Pruning
+
+#Credits
+
+This repo is a fork from an existing repo, with an MIT License, created by Sherif-Abdou.
+We have made modifications to the source code to fit with the project.
