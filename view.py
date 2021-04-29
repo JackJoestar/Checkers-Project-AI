@@ -82,6 +82,8 @@ def runAI(color):
     print()
     print("MOVE "+ str(move))
     print("----------------------------------------------------")
+
+    #MODIFY HERE TO SWITCH ALGORITHMS
     #Alpha-beta pruning
     t1 = time.time()
     ai_move_alpha_beta = ai.minimax_alpha_beta(0, color, model.board, float("-inf"), float("inf"))
@@ -100,7 +102,7 @@ def runAI(color):
     model.ttable.hashtable = {}
 
 
-
+    #MODIFY HERE TO SWITCH ALGORITHMS
     #ai_move = ai_move_minimax
     ai_move = ai_move_alpha_beta
     ai_move.apply(model.board)
